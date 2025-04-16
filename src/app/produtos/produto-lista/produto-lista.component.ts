@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProdutoService, Produto } from '../produto.service';
 
 @Component({
   selector: 'app-produto-lista',
-  standalone: false,
   templateUrl: './produto-lista.component.html',
-  styleUrl: './produto-lista.component.scss'
+  styleUrls: ['./produto-lista.component.css']
 })
-export class ProdutoListaComponent {
+export class ProdutoListaComponent implements OnInit {
+  produtos: Produto[] = [];
 
+  constructor(private produtoService: ProdutoService) {}
+
+  ngOnInit(): void {
+    this.produtoService.getProdutos().subscribe({
+      next: (dados: Produto[]) => this.produtos = dados,
+      error: (erro: any) => console.error('Erro ao carregar produtos:', erro)
+    });
+  }
 }
